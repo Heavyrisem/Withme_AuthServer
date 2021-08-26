@@ -42,6 +42,8 @@ router.post('/update', middleware.Parser, async (req: Request<any,any,NUGU_Reque
         }
     } else {
         // nuguResponse.resultCode = DefaultError.INVAILD_PARAMS.toString();
+        if (!req.body.action.parameters.code) nuguResponse.output.result += "code ";
+        if (!req.body.profile) nuguResponse.output.result += "profile ";
         nuguResponse.output.result = "입력값을 찾을수 없습니다.";
     }
 
