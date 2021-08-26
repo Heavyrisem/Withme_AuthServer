@@ -27,15 +27,14 @@ interface update_P {
         type: string
         value: string
     }
-    code?: number
 }
 router.post('/update', middleware.Parser, async (req: Request<any,any,NUGU_Request<update_P>>, res) => {
     console.log(req.body);
     console.log(req.body.action.parameters);
     let nuguResponse = new NUGU_Response<{result: string}>({result: "인증이 완료되었습니다."});
-    if (req.body.action.parameters.code && req.body.profile) {
+    if (req.body.action.parameters.number.value && req.body.profile) {
         try {
-            let AuthResult = await Auth.AuthDevice(req.body.action.parameters.code, req.body.profile.privatePlay.deviceUniqueId);
+            let AuthResult = await Auth.AuthDevice(Number(req.body.action.parameters.number.value), req.body.profile.privatePlay.deviceUniqueId);
             if (!AuthResult) nuguResponse.output.result = "인증에 실패했습니다.";
         } catch (err) {
             // nuguResponse.resultCode = err;
@@ -43,7 +42,7 @@ router.post('/update', middleware.Parser, async (req: Request<any,any,NUGU_Reque
         }
     } else {
         // nuguResponse.resultCode = DefaultError.INVAILD_PARAMS.toString();
-        if (!req.body.action.parameters.code) nuguResponse.output.result += "code ";
+        if (!req.body.action.parameters.number.value) nuguResponse.output.result += "code ";
         if (!req.body.profile) nuguResponse.output.result += "profile ";
         nuguResponse.output.result = "입력값을 찾을수 없습니다.";
     }

@@ -10,7 +10,7 @@ const Server = express();
 
 Server.use(middleware.Parser);
 
-Server.use('/', Auth);
+Server.use('/auth', Auth);
 
 Server.listen(9998, () => {
     console.log('Auth server online');
