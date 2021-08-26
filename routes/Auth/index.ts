@@ -30,7 +30,7 @@ interface update_P {
     code?: number
 }
 router.post('/update', middleware.Parser, async (req: Request<any,any,NUGU_Request<update_P>>, res) => {
-    console.log(req.body.action.parameters);
+    console.log(req.body);
     let nuguResponse = new NUGU_Response<{result: string}>({result: "인증이 완료되었습니다."});
     if (req.body.action.parameters.code && req.body.profile) {
         try {
