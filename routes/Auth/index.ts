@@ -49,7 +49,7 @@ router.post('/update', middleware.Parser, async (req: Request<any,any,NUGU_Reque
 })
 
 
-router.post('.test', middleware.Parser, (req, res) => {
+router.post('/test', (req, res) => {
     console.log(req.body);
     let d = new NUGU_Response<{result: string}>({result: "우부부에부에부에"});
     res.send(d.toString());
