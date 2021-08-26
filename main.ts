@@ -12,12 +12,6 @@ Server.use(middleware.Parser);
 
 Server.use('/auth', Auth);
 
-Server.use('/test', (req, res) => {
-    console.log(req.body);
-    let d = new NUGU_Response<{result: string}>({result: "우부부에부에부에"});
-    res.send(d.toString());
-})
-
 Server.listen(9998, () => {
     console.log('Auth server online');
 })
