@@ -8,6 +8,14 @@ export class NUGU_Response<T = any> {
     constructor(output: T) {
         this.output = output;
     }
+    toString(): string {
+        let d = {
+            version: this.version,
+            resultCode: this.resultCode,
+            output: this.output
+        }
+        return JSON.stringify(d);
+    }
 }
 
 export interface NUGU_Request<T = any> {
