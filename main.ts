@@ -10,7 +10,7 @@ import './model/DB';
 
 const App = express();
 const Server = http.createServer(App);
-const io = new socketio.Server(Server);
+const io = new socketio.Server(Server, {path: '/auth'});
 
 App.use(middleware.Parser);
 
@@ -18,6 +18,6 @@ App.use('/', Auth);
 
 io.on('connection', socket);
 
-Server.listen(9998, () => {
+Server.listen(3000, () => {
     console.log('Auth server online');
 })
