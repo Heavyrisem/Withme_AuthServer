@@ -7,34 +7,39 @@ import { NUGU_Request, NUGU_Response } from "../Types";
 
 const router = Router();
 
+router.use(((req, res, next) => {
+    console.log(req.url);
+    next();
+}))
+
 interface register_P {
     mobileID?: string
 }
-router.post('/register', middleware.Parser, async (req: Request<any,any,register_P>, res) => {
-    console.log(req.body);
-    if (!req.body.mobileID) return res.send({detail: DefaultError.INVAILD_PARAMS});
+// router.post('/register', middleware.Parser, async (req: Request<any,any,register_P>, res) => {
+//     console.log(req.body);
+//     if (!req.body.mobileID) return res.send({detail: DefaultError.INVAILD_PARAMS});
     
-    try {
-        let DeviceData = await Auth.CreateDevice(req.body.mobileID);
-        return res.send({result: DeviceData.code});
-    } catch (err) {
-        return res.send({detail: err});
-    }
-})
+//     try {
+//         let DeviceData = await Auth.CreateDevice(req.body.mobileID);
+//         return res.send({result: DeviceData.code});
+//     } catch (err) {
+//         return res.send({detail: err});
+//     }
+// })
 
-interface update_P {
-    number: {
+interface auth_P {
+    number?: {
         type: string
         value: string
     }
 }
-router.post('/update', middleware.Parser, async (req: Request<any,any,NUGU_Request<update_P>>, res) => {
+router.post('/auth', middleware.Parser, async (req: Request<any,any,NUGU_Request<auth_P>>, res) => {
     console.log(req.body);
     console.log(req.body.action.parameters);
     let nuguResponse = new NUGU_Response<{result: string}>({result: "인증이 완료되었습니다."});
-    if (req.body.action.parameters.number.value && req.body.profile) {
+    if (req.body.action.parameters.number && req.body.profile) {
         try {
-            let AuthResult = await Auth.AuthDevice(Number(req.body.action.parameters.number.value), req.body.profile.privatePlay.deviceUniqueId);
+            let AuthResult = await Auth.AuthDevice(Number(req.body.action.parameters.number.value.split('|').join("")), req.body.profile.privatePlay.deviceUniqueId);
             if (!AuthResult) nuguResponse.output.result = "인증에 실패했습니다.";
         } catch (err) {
             // nuguResponse.resultCode = err;
@@ -42,9 +47,10 @@ router.post('/update', middleware.Parser, async (req: Request<any,any,NUGU_Reque
         }
     } else {
         // nuguResponse.resultCode = DefaultError.INVAILD_PARAMS.toString();
-        if (!req.body.action.parameters.number.value) nuguResponse.output.result += "code ";
+        nuguResponse.output.result = "";
+        if (!req.body.action.parameters.number) nuguResponse.output.result += "code ";
         if (!req.body.profile) nuguResponse.output.result += "profile ";
-        nuguResponse.output.result = "입력값을 찾을수 없습니다.";
+        nuguResponse.output.result += "입력값을 찾을 수 없습니다.";
     }
 
     return res.send(nuguResponse);
@@ -53,7 +59,7 @@ router.post('/update', middleware.Parser, async (req: Request<any,any,NUGU_Reque
 
 router.post('/test', (req, res) => {
     console.log(req.body);
-    let d = new NUGU_Response<{result: string}>({result: "반으로 갈라진 누구 캔들이 보이네요"});
+    let d = new NUGU_Response<{result: string}>({result: "속이 파내진 누구 캔들모양 물병이 보이네요"});
     res.send(d.toString());
 })
 

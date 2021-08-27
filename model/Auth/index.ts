@@ -1,3 +1,4 @@
+import global from '../../global';
 import DB from '../DB';
 import { DefaultError, Device_DB } from '../Types';
 
@@ -31,14 +32,30 @@ export default {
 
                 let Device = await db.collection('Devices').findOne<Device_DB>({code: code});
                 if (Device) {
-                    if (await (await db.collection('Devices').updateOne({code: code}, {$set: { code: 0, candleID: candleID }})).acknowledged) {
+                    if (await (await db.collection('Devices').updateOne({code: code}, {$set: { code: -1, candleID: candleID }})).acknowledged) {
                         // Send Socket Event to Client
-                        // ...
-                        
+                        global.SOCKET_CLIENTS[Device.mobileID].emit("Authed", {Authed: true});
+
                         return resolve(true);
                     }
                     else throw DefaultError.DB_FAIL;
                 } else throw DefaultError.DB_FAIL;
+            } catch (err) {
+                return reject(DefaultError.DB_FAIL);
+            }
+        })
+    },
+    CheckAuthed: async (mobileID: string): Promise<boolean> => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const db = await DB.GetConnection();
+    
+                const result = await db.collection('Devices').findOne<Device_DB>({mobileID: mobileID});
+                if (result && result.code == -1) return resolve(true);
+                else {
+                    if (result) await db.collection('Devices').deleteOne({mobileID: mobileID});
+                    return resolve(false);
+                }
             } catch (err) {
                 return reject(DefaultError.DB_FAIL);
             }
