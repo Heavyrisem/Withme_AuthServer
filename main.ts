@@ -10,13 +10,17 @@ import './model/DB';
 
 const App = express();
 const Server = http.createServer(App);
-const io = new socketio.Server(Server, {path: '/auth/socket'});
+const io = new socketio.Server(Server, {path: '/socket'});
 
 App.use(middleware.Parser);
+App.use((req, res, next) => {
+    console.log(req.url);
+    next()
+})
 
-App.use('/', Auth);
+io.of('/auth').on('connection', socket);
+App.use(Auth);
 
-io.on('connection', socket);
 
 Server.listen(3000, () => {
     console.log('Auth server online');
