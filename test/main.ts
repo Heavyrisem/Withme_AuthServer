@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 
 console.log("test");
-let socket = io("http://localhost:3000/auth", {query: {mobileID: "TestID"}, path: '/socket'});
+let socket = io("https://withme.heavyrisem.xyz/socket", {query: {mobileID: "TestID"}, path: '/auth'});
 
 socket.on('connect', () => {
     console.log("conn");

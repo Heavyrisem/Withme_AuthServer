@@ -10,7 +10,7 @@ import './model/DB';
 
 const App = express();
 const Server = http.createServer(App);
-const io = new socketio.Server(Server, {path: '/socket'});
+const io = new socketio.Server(Server, {path: '/auth'});
 
 App.use(middleware.Parser);
 App.use((req, res, next) => {
@@ -18,7 +18,7 @@ App.use((req, res, next) => {
     next()
 })
 
-io.of('/auth').on('connection', socket);
+io.of('/socket').on('connection', socket);
 App.use(Auth);
 
 
