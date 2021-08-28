@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 
 console.log("test");
-let socket = io("https://withme.heavyrisem.xyz/socket", {query: {mobileID: "TestID"}, path: '/auth', transports: ['websocket']});
+let socket = io("https://withme.heavyrisem.xyz/socket", {query: {mobileID: "macTestID"}, path: '/auth', transports: ['websocket']});
 
 socket.on('connect', () => {
     console.log("conn");

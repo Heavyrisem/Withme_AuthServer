@@ -34,7 +34,7 @@ interface auth_P {
     }
 }
 router.post('/auth', middleware.Parser, async (req: Request<any,any,NUGU_Request<auth_P>>, res) => {
-    console.log(req.body);
+    // console.log(req.body);
     console.log(req.body.action.parameters);
     let nuguResponse = new NUGU_Response<{result: string}>({result: "인증이 완료되었습니다."});
     if (req.body.action.parameters.number && req.body.profile) {
