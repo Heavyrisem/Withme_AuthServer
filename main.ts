@@ -13,6 +13,7 @@ const Server = http.createServer(App);
 const io = new socketio.Server(Server, {path: '/auth'});
 
 App.use(middleware.Parser);
+App.use(middleware.NUGU_Dev);
 App.use((req, res, next) => {
     console.log(req.url);
     next()
