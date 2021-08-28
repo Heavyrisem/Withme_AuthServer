@@ -1,6 +1,8 @@
 # Withme_AuthServer
 
 ## Socket /auth {path: /socket}
+handshake: { mobileID: string }
+
 모바일 디바이스에서 서비스 실행 시 연결해야 할 인증서버
 
 이벤트 목록
