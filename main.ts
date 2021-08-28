@@ -10,7 +10,7 @@ import './model/DB';
 
 const App = express();
 const Server = http.createServer(App);
-const io = new socketio.Server(Server, {path: '/auth'});
+const io = new socketio.Server(Server, {path: '/auth', transports: ['websocket']});
 
 App.use(middleware.Parser);
 App.use(middleware.NUGU_Dev);

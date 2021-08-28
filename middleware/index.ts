@@ -13,11 +13,9 @@ export default {
         console.log("Debug");
         if (req.body.version) {
             const nuguRequest = req.body as NUGU_Request;
-            if (!nuguRequest.profile) req.body = {
-                profile: {
-                    privatePlay: {
-                        deviceUniqueId: "TestID"
-                    }
+            if (!nuguRequest.profile) req.body.profile = {
+                privatePlay: {
+                    deviceUniqueId: "TestID"
                 }
             }
         }
