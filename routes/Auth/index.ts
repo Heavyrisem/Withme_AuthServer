@@ -40,10 +40,13 @@ router.post('/auth', middleware.Parser, async (req: Request<any,any,NUGU_Request
     if (req.body.action.parameters.number && req.body.profile) {
         try {
             let AuthResult = await Auth.AuthDevice(Number(req.body.action.parameters.number.value.split('|').join("")), req.body.profile.privatePlay.deviceUniqueId);
-            if (!AuthResult) nuguResponse.output.result = "인증에 실패했습니다.";
+            nuguResponse.output.result = "인증에 실패했습니다.";
         } catch (err) {
+            let isAuthed = await Auth.CheckAuthed(req.body.profile.privatePlay.deviceUniqueId);
+            if (isAuthed) nuguResponse.output.result = "이미 인증된 캔들 입니다."
+            
             // nuguResponse.resultCode = err;
-            nuguResponse.output.result = "오류가 발생했습니다."; 
+            nuguResponse.output.result = "인증 중에 오류가 발생했습니다.";
         }
     } else {
         // nuguResponse.resultCode = DefaultError.INVAILD_PARAMS.toString();

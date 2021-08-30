@@ -39,7 +39,7 @@ export default {
                         return resolve(true);
                     }
                     else throw DefaultError.DB_FAIL;
-                } else throw DefaultError.DB_FAIL;
+                } else return resolve(false);
             } catch (err) {
                 return reject(DefaultError.DB_FAIL);
             }
