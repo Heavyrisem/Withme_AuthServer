@@ -25,6 +25,7 @@ export default async (Client: socketio.Socket) => {
     }
 
     function ErrorHandler(err: any) {
+        console.log(err);
         Client.emit("error", err);
         Client.disconnect();
     }
