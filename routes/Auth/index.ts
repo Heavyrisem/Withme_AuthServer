@@ -4,6 +4,7 @@ import { DefaultError } from "../../model/Types";
 
 import Auth from '../../model/Auth';
 import { NUGU_Request, NUGU_Response } from "../Types";
+import global from "../../global";
 
 const router = Router();
 
@@ -61,9 +62,7 @@ router.post('/auth', middleware.Parser, async (req: Request<any,any,NUGU_Request
 
 
 router.post('/test', (req, res) => {
-    console.log(req.body);
-    let d = new NUGU_Response<{result: string}>({result: "속이 파내진 누구 캔들모양 물병이 보이네요"});
-    res.send(d.toString());
+    res.send(Object.keys(global.SOCKET_CLIENTS));
 })
 
 
