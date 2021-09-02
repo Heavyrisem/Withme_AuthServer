@@ -34,8 +34,11 @@ export default {
                 if (Device) {
                     if (await (await db.collection('Devices').updateOne({code: code}, {$set: { code: -1, candleID: candleID }})).acknowledged) {
                         // Send Socket Event to Client
-                        global.SOCKET_CLIENTS[Device.mobileID].emit("Authed", {Authed: true});
-
+                        if (global.SOCKET_CLIENTS[Device.mobileID]) {
+                            global.SOCKET_CLIENTS[Device.mobileID].emit("Authed", {Authed: true});
+                            global.SOCKET_CLIENTS[Device.mobileID].disconnect();
+                        }
+                        
                         return resolve(true);
                     }
                     else throw DefaultError.DB_FAIL;
