@@ -13,7 +13,7 @@ export default {
                 if (idx) return resolve(idx);
     
                 const DeviceData = {
-                    code: Math.floor(Math.random() * (999999+1 - 100000)) + 100000,
+                    code: ((Math.floor(Math.random() * (999+1 - 100)) + 100)*1000)+(Math.floor(Math.random() * (999+1 - 100)) + 100),
                     mobileID: mobileID
                 }
                 
